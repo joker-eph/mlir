@@ -49,6 +49,7 @@ if(LLVM_BUILD_EXAMPLES)
     toyc-ch3
     toyc-ch4
     toyc-ch5
+    toyc-ch6
     )
 endif()
 
