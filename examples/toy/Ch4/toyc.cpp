@@ -22,7 +22,6 @@
 #include "toy/Dialect.h"
 #include "toy/MLIRGen.h"
 #include "toy/Parser.h"
-#include "toy/Passes.h"
 
 #include "mlir/Analysis/Verifier.h"
 #include "mlir/IR/MLIRContext.h"
@@ -31,6 +30,7 @@
 #include "mlir/Pass/Pass.h"
 #include "mlir/Pass/PassManager.h"
 #include "mlir/Transforms/Passes.h"
+#include "toy/Passes.h"
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/CommandLine.h"
@@ -82,9 +82,8 @@ std::unique_ptr<toy::ModuleAST> parseInputFile(llvm::StringRef filename) {
 
 mlir::LogicalResult optimize(mlir::ModuleOp module) {
   mlir::PassManager pm(module.getContext());
-  pm.addPass(mlir::createCanonicalizerPass());
-  pm.addPass(createShapeInferencePass());
-  pm.addPass(mlir::createCanonicalizerPass());
+  //pm.addPass(mlir::createInlinerPass());
+  pm.addPass(mlir::createShapeInferencePass());
   // Apply any generic pass manager command line options.
   applyPassManagerCLOptions(pm);
 
@@ -93,7 +92,7 @@ mlir::LogicalResult optimize(mlir::ModuleOp module) {
 
 int dumpMLIR() {
   // Register our Dialect with MLIR
-  mlir::registerDialect<ToyDialect>();
+  mlir::registerDialect<mlir::toy::ToyDialect>();
 
   mlir::MLIRContext context;
   mlir::OwningModuleRef module;
