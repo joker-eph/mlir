@@ -77,8 +77,8 @@ class ShapeInferencePass : public mlir::FunctionPass<ShapeInferencePass> {
 public:
   bool returnsGenericArray(Operation *op) {
     if (op->getNumResults() == 1) {
-      auto arrayTy = op->getResult(0)->getType().cast<RankedTensorType>();
-      return arrayTy.getShape().empty();
+      if (!op->getResult(0)->getType().isa<ShapedType>())
+          return true;
     }
     return false;
   }
