@@ -35,20 +35,6 @@ def Toy_Dialect : Dialect {
   let cppNamespace = "toy";
 }
 
-def ShapeInferenceOpInterface : OpInterface<"ShapeInferenceOpInterface"> {
-  let methods = [
-    InterfaceMethod<
-      "bool", "returnsGenericArray", (ins), [{
-      if (getNumResults() == 1) {
-        auto arrayTy = op.getResult()->getType().cast<RankedTensorType>();
-        return arrayTy.getShape().empty();
-      }
-      return false;
-    }]>,
-    InterfaceMethod<"void", "inferShapes", (ins), [{}]>
-  ];
-}
-
 // Base class for toy dialect operations. This operation inherits from the base
 // `Op` class in OpBase.td, and provides:
 //   * The parent dialect of the operation.
@@ -56,6 +42,12 @@ def ShapeInferenceOpInterface : OpInterface<"ShapeInferenceOpInterface"> {
 //   * A list of traits for the operation.
 class Toy_Op<string mnemonic, list<OpTrait> traits = []> :
     Op<Toy_Dialect, mnemonic, traits>;
+
+def ShapeInferenceOpInterface : OpInterface<"Toy_Op"> {
+  let methods = [
+    InterfaceMethod<"void", "inferShapes", (ins), [{}]>
+  ];
+}
 
 //===----------------------------------------------------------------------===//
 // Toy Operations

@@ -36,6 +36,8 @@
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 #include "mlir/IR/MLIRContext.h"
+#include "mlir/IR/OpDefinition.h"
+#include "mlir/IR/StandardTypes.h"
 #include <algorithm>
 
 #define DEBUG_TYPE "shape-inference"
@@ -50,8 +52,10 @@ using namespace mlir;
 
 namespace {
 
-#include "toy/ShapeInferenceOpInterfaces.cpp.inc"
+#include "toy/Ops.h.inc"
 #include "toy/Ops.cpp.inc"
+#include "toy/ShapeInferenceOpInterfaces.h.inc"
+#include "toy/ShapeInferenceOpInterfaces.cpp.inc"
 
 /// The ShapeInferencePass is a FunctionPass that performs intra-procedural shape inference.
 ///
@@ -71,6 +75,13 @@ namespace {
 ///
 class ShapeInferencePass : public mlir::FunctionPass<ShapeInferencePass> {
 public:
+  bool returnsGenericArray(Operation *op) {
+    if (op->getNumResults() == 1) {
+      auto arrayTy = op->getResult(0)->getType().cast<RankedTensorType>();
+      return arrayTy.getShape().empty();
+    }
+    return false;
+  }
 
   void runOnFunction() override {
 
@@ -80,7 +91,7 @@ public:
     // these are operations that return a generic array.
     llvm::SmallPtrSet<mlir::Operation *, 16> opWorklist;
     f.walk([&](mlir::Operation *op) {
-      if (op->returnsGenericArray())
+      if (returnsGenericArray(op))
       {
         opWorklist.insert(op);
       }
@@ -91,15 +102,16 @@ public:
     while (!opWorklist.empty()) {
       // Find the next operation ready for inference, that is an operation
       // with all operands already resolved (non-generic).
-      auto nextop = llvm::find_if(opWorklist, [](Operation *op){return op->returnsGenericArray();});
+      auto nextop = llvm::find_if(opWorklist, [this](Operation *op){return this->returnsGenericArray(op);});
 
       if (nextop == opWorklist.end())
         break; // failure: no operations can be inferred.
 
-      mlir::Operation *op = *nextop;
+      Operation *op = *nextop;
       opWorklist.erase(op);
       LLVM_DEBUG(llvm::dbgs() << "Inferring shape for: " << *op << "\n");
-      op->inferShape();
+      auto toyOp = dyn_cast<Toy_Op>(op); 
+      toyOp.inferShapes();
     }
 
     // If the operation worklist isn't empty, this indicates a failure.
@@ -109,11 +121,11 @@ public:
                   << opWorklist.size() << " operations couldn't be inferred\n";
     }
   }
+};
 }
-}
-/*namespace mlir {
+namespace mlir {
 /// Create a Shape Inference pass.
 std::unique_ptr<mlir::Pass> createShapeInferencePass() {
   return std::make_unique<ShapeInferencePass>();
 }
-}*/
+}
