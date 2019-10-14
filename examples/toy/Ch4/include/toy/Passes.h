@@ -27,6 +27,7 @@
 namespace mlir {
 class Pass;
 std::unique_ptr<mlir::Pass> createShapeInferencePass();
+std::unique_ptr<mlir::Pass> createDeadFunctionEliminationPass();
 } // namespace mlir
 
 #endif // MLIR_TUTORIAL_TOY_PASSES_H
