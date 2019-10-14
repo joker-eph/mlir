@@ -50,7 +50,7 @@ using namespace mlir;
 
 namespace {
 
-#include "toy/ShapeInferenceOpInterfaces.cpp.inc.d"
+#include "toy/ShapeInferenceOpInterfaces.cpp.inc"
 #include "toy/Ops.cpp.inc"
 
 /// The ShapeInferencePass is a FunctionPass that performs intra-procedural shape inference.
