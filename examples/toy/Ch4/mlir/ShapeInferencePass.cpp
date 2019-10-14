@@ -50,7 +50,8 @@ using namespace mlir;
 
 namespace {
 
-#include "ShapeInferenceOpInterfaces.cpp.inc.d"
+#include "toy/ShapeInferenceOpInterfaces.cpp.inc.d"
+#include "toy/Ops.cpp.inc"
 
 /// The ShapeInferencePass is a FunctionPass that performs intra-procedural shape inference.
 ///
@@ -110,9 +111,9 @@ public:
   }
 }
 }
-namespace mlir {
+/*namespace mlir {
 /// Create a Shape Inference pass.
 std::unique_ptr<mlir::Pass> createShapeInferencePass() {
   return std::make_unique<ShapeInferencePass>();
 }
-}
+}*/

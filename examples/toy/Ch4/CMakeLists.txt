@@ -5,8 +5,8 @@ set(LLVM_LINK_COMPONENTS
 set(LLVM_TARGET_DEFINITIONS include/toy/Ops.td)
 mlir_tablegen(include/toy/Ops.h.inc -gen-op-decls)
 mlir_tablegen(include/toy/Ops.cpp.inc -gen-op-defs)
-mlir_tablegen(ShapeInferenceOpInterfaces.h.inc -gen-op-interface-decls)
-mlir_tablegen(ShapeInferenceOpInterfaces.cpp.inc -gen-op-interface-defs)
+mlir_tablegen(include/toy/ShapeInferenceOpInterfaces.h.inc -gen-op-interface-decls)
+mlir_tablegen(include/toy/ShapeInferenceOpInterfaces.cpp.inc -gen-op-interface-defs)
 add_public_tablegen_target(ToyCh4OpsIncGen)
 
 #set(LLVM_TARGET_DEFINITIONS mlir/ToyCombine.td)

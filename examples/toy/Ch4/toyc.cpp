@@ -84,7 +84,7 @@ mlir::LogicalResult optimize(mlir::ModuleOp module) {
   mlir::PassManager pm(module.getContext());
   pm.addPass(mlir::createCanonicalizerPass());
 //  pm.addPass(mlir::createInlinerPass());
-  pm.addPass(mlir::createShapeInferencePass());
+//  pm.addPass(mlir::createShapeInferencePass());
   // Apply any generic pass manager command line options.
   applyPassManagerCLOptions(pm);
 
