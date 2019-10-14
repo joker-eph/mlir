@@ -22,6 +22,7 @@
 #include "toy/Dialect.h"
 #include "toy/MLIRGen.h"
 #include "toy/Parser.h"
+#include "include/toy/Passes.h"
 
 #include "mlir/Analysis/Verifier.h"
 #include "mlir/IR/MLIRContext.h"
@@ -83,6 +84,7 @@ mlir::LogicalResult optimize(mlir::ModuleOp module) {
   mlir::PassManager pm(module.getContext());
   pm.addPass(mlir::createCanonicalizerPass());
 //  pm.addPass(mlir::createInlinerPass());
+  pm.addPass(mlir::createShapeInferencePass());
   // Apply any generic pass manager command line options.
   applyPassManagerCLOptions(pm);
 

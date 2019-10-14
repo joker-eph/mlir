@@ -21,6 +21,7 @@ add_toy_chapter(toyc-ch4
   mlir/MLIRGen.cpp
   mlir/Dialect.cpp
   mlir/ToyCombine.cpp
+  mlir/ShapeInferencePass.cpp
   )
 
 add_dependencies(toyc-ch4 ToyCh4OpsIncGen)
