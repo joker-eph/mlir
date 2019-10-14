@@ -77,6 +77,7 @@ ToyDialect::ToyDialect(mlir::MLIRContext *ctx) : mlir::Dialect("toy", ctx) {
 #define GET_OP_LIST
 #include "toy/Ops.cpp.inc"
       >();
+    addInterfaces<ToyInlinerInterface>();
 }
 
 //===----------------------------------------------------------------------===//

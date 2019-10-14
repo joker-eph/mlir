@@ -134,8 +134,11 @@ std::unique_ptr<FunctionPassBase> createMemRefDataFlowOptPass();
 /// Creates a pass to strip debug information from a function.
 std::unique_ptr<FunctionPassBase> createStripDebugInfoPass();
 
-/// Creates a pass which tests loop fusion utilities.
+/// creates a pass which tests loop fusion utilities.
 std::unique_ptr<FunctionPassBase> createTestLoopFusionPass();
+
+/// creates a pass which performs function inlining.
+std::unique_ptr<ModulePassBase> createInlinerPass();
 
 } // end namespace mlir
 
