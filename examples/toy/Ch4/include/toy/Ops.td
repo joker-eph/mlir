@@ -45,7 +45,8 @@ class Toy_Op<string mnemonic, list<OpTrait> traits = []> :
 
 def ShapeInferenceOpInterface : OpInterface<"Toy_Op"> {
   let methods = [
-    InterfaceMethod<"void", "inferShapes", (ins), [{}]>
+    InterfaceMethod<"Infer output shape for the current operation.",
+                    "void", "inferShapes", (ins), [{}]>
   ];
 }
 
