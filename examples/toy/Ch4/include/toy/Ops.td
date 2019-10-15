@@ -26,6 +26,7 @@
 #ifdef OP_BASE
 #else
 include "mlir/IR/OpBase.td"
+include "include/toy/ShapeInferenceInterface.td"
 #endif // OP_BASE
 
 // Provide a definition of the 'toy' dialect in the ODS framework so that we
@@ -42,13 +43,6 @@ def Toy_Dialect : Dialect {
 //   * A list of traits for the operation.
 class Toy_Op<string mnemonic, list<OpTrait> traits = []> :
     Op<Toy_Dialect, mnemonic, traits>;
-
-def ShapeInferenceOpInterface : OpInterface<"Toy_Op"> {
-  let methods = [
-    InterfaceMethod<"Infer output shape for the current operation.",
-                    "void", "inferShapes", (ins), [{}]>
-  ];
-}
 
 //===----------------------------------------------------------------------===//
 // Toy Operations

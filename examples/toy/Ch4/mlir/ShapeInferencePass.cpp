@@ -110,8 +110,8 @@ public:
       Operation *op = *nextop;
       opWorklist.erase(op);
       LLVM_DEBUG(llvm::dbgs() << "Inferring shape for: " << *op << "\n");
-      auto toyOp = dyn_cast<Toy_Op>(op); 
-      toyOp.inferShapes();
+      auto shapeOp = dyn_cast<ShapeInference>(op); 
+      shapeOp.inferShapes();
     }
 
     // If the operation worklist isn't empty, this indicates a failure.

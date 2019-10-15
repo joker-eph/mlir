@@ -5,9 +5,12 @@ set(LLVM_LINK_COMPONENTS
 set(LLVM_TARGET_DEFINITIONS include/toy/Ops.td)
 mlir_tablegen(include/toy/Ops.h.inc -gen-op-decls)
 mlir_tablegen(include/toy/Ops.cpp.inc -gen-op-defs)
+add_public_tablegen_target(ToyCh4OpsIncGen)
+
+set(LLVM_TARGET_DEFINITIONS include/toy/ShapeInferenceInterface.td)
 mlir_tablegen(include/toy/ShapeInferenceOpInterfaces.h.inc -gen-op-interface-decls)
 mlir_tablegen(include/toy/ShapeInferenceOpInterfaces.cpp.inc -gen-op-interface-defs)
-add_public_tablegen_target(ToyCh4OpsIncGen)
+add_public_tablegen_target(ShapeInferenceInterfaceIncGen)
 
 set(LLVM_TARGET_DEFINITIONS mlir/ToyCombine.td)
 mlir_tablegen(ToyCombine.h.inc -gen-rewriters)
@@ -26,6 +29,7 @@ add_toy_chapter(toyc-ch4
   )
 
 add_dependencies(toyc-ch4 ToyCh4OpsIncGen)
+add_dependencies(toyc-ch4 ShapeInferenceInterfaceIncGen)
 add_dependencies(toyc-ch4 MLIRToyCombineIncGen2)
 include_directories(include/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
