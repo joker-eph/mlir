@@ -87,7 +87,7 @@ ToyDialect::ToyDialect(mlir::MLIRContext *ctx) : mlir::Dialect("toy", ctx) {
 /// Build a constant operation.
 /// The builder is passed as an argument, so is the state that this method is
 /// expected to fill in order to build the operation.
-static void buildConstantOp(mlir::Builder *builder, mlir::OperationState *state,
+static void buildConstantOp(mlir::Builder *builder, mlir::OperationState &state,
                             double value) {
   auto dataType = builder->getTensorType({}, builder->getF64Type());
   auto dataAttribute = DenseElementsAttr::get(dataType, value);
@@ -120,25 +120,25 @@ static mlir::LogicalResult verify(ConstantOp op) {
   return mlir::success();
 }
 
-static void buildAddOp(mlir::Builder *builder, mlir::OperationState *state,
+static void buildAddOp(mlir::Builder *builder, mlir::OperationState &state,
                        mlir::Value *lhs, mlir::Value *rhs) {
-  state->addTypes(builder->getTensorType(builder->getF64Type()));
-  state->addOperands({lhs, rhs});
+  state.addTypes(builder->getTensorType(builder->getF64Type()));
+  state.addOperands({lhs, rhs});
 }
 
 static void buildGenericCallOp(mlir::Builder *builder,
-                               mlir::OperationState *state, StringRef callee,
+                               mlir::OperationState &state, StringRef callee,
                                ArrayRef<mlir::Value *> arguments) {
   // Generic call always returns an unranked Tensor initially.
-  state->addTypes(builder->getTensorType(builder->getF64Type()));
-  state->addOperands(arguments);
-  state->addAttribute("callee", builder->getSymbolRefAttr(callee));
+  state.addTypes(builder->getTensorType(builder->getF64Type()));
+  state.addOperands(arguments);
+  state.addAttribute("callee", builder->getSymbolRefAttr(callee));
 }
 
-static void buildMulOp(mlir::Builder *builder, mlir::OperationState *state,
+static void buildMulOp(mlir::Builder *builder, mlir::OperationState &state,
                        mlir::Value *lhs, mlir::Value *rhs) {
-  state->addTypes(builder->getTensorType(builder->getF64Type()));
-  state->addOperands({lhs, rhs});
+  state.addTypes(builder->getTensorType(builder->getF64Type()));
+  state.addOperands({lhs, rhs});
 }
 
 static mlir::LogicalResult verify(ReturnOp op) {
@@ -177,9 +177,9 @@ static mlir::LogicalResult verify(ReturnOp op) {
 }
 
 static void buildTransposeOp(mlir::Builder *builder,
-                             mlir::OperationState *state, mlir::Value *value) {
-  state->addTypes(builder->getTensorType(builder->getF64Type()));
-  state->addOperands(value);
+                             mlir::OperationState &state, mlir::Value *value) {
+  state.addTypes(builder->getTensorType(builder->getF64Type()));
+  state.addOperands(value);
 }
 
 //===----------------------------------------------------------------------===//

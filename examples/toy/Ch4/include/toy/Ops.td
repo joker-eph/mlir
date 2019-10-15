@@ -84,13 +84,13 @@ def ConstantOp : Toy_Op<"constant", [NoSideEffect]> {
   // using `builder.create<ConstantOp>(...)`.
   let builders = [
     // Build a constant with a given constant tensor value.
-    OpBuilder<"Builder *builder, OperationState *result, "
+    OpBuilder<"Builder *builder, OperationState &result, "
               "DenseElementsAttr value", [{
       build(builder, result, value.getType(), value);
     }]>,
 
     // Build a constant with a given constant floating-point value.
-    OpBuilder<"Builder *builder, OperationState *result, double value", [{
+    OpBuilder<"Builder *builder, OperationState &result, double value", [{
       buildConstantOp(builder, result, value);
     }]>
   ];
@@ -111,7 +111,7 @@ def AddOp : Toy_Op<"add", [NoSideEffect]> {
 
   // Allow building an AddOp with from the two input operands.
   let builders = [
-    OpBuilder<"Builder *b, OperationState *result, Value *lhs, Value *rhs", [{
+    OpBuilder<"Builder *b, OperationState &result, Value *lhs, Value *rhs", [{
       buildAddOp(b, result, lhs, rhs);
     }]
   >];
@@ -150,7 +150,7 @@ def GenericCallOp : Toy_Op<"generic_call"> {
   // Add custom build methods for the generic call operation.
   let builders = [
     // Build a constant with a given constant tensor value.
-    OpBuilder<"Builder *builder, OperationState *result, "
+    OpBuilder<"Builder *builder, OperationState &result, "
               "StringRef callee, ArrayRef<Value *> arguments", [{
       buildGenericCallOp(builder, result, callee, arguments);
     }]>
@@ -169,7 +169,7 @@ def MulOp : Toy_Op<"mul", [NoSideEffect]> {
 
   // Allow building a MulOp with from the two input operands.
   let builders = [
-    OpBuilder<"Builder *b, OperationState *result, Value *lhs, Value *rhs", [{
+    OpBuilder<"Builder *b, OperationState &result, Value *lhs, Value *rhs", [{
       buildMulOp(b, result, lhs, rhs);
     }]
   >];
@@ -250,7 +250,7 @@ def ReturnOp : Toy_Op<"return", [Terminator, HasParent<"FuncOp">]> {
 
   // Allow building a ReturnOp with no return operand.
   let builders = [OpBuilder<
-    "Builder *b, OperationState *result", [{ build(b, result, llvm::None); }]
+    "Builder *b, OperationState &result", [{ build(b, result, llvm::None); }]
   >];
 
   // Provide extra utility definitions on the c++ operation class definition.
@@ -271,7 +271,7 @@ def TransposeOp : Toy_Op<"transpose", [NoSideEffect]> {
 
   // Allow building a TransposeOp with from the two input operands.
   let builders = [
-    OpBuilder<"Builder *b, OperationState *result, Value *input", [{
+    OpBuilder<"Builder *b, OperationState &result, Value *input", [{
       buildTransposeOp(b, result, input);
     }]
   >];
