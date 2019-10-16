@@ -96,5 +96,14 @@ input tensor.
     return;
   }
 ```
+3. We then create a generic ShapeInference Function pass that uses operation casting to access the inferShapes() method.
+This is an intraprocedural shape inference pass that executes after function inlining and iterates over operations in a worklist 
+calling inferShapes for each operation with unknown result shapes.
+
+4. Finally, we call into shape inference pass by adding it to the pass manager for toy:
+
+```Toy(.cpp)
+	pm.addPass(mlir::createShapeInferencePass());
+```
 
 ** Insert example here **
