@@ -1,4 +1,4 @@
-// RUN: not toyc-ch4 %s -emit=mlir 2>&1
+// RUN: not toyc-ch3 %s -emit=mlir 2>&1
 
 
 // This IR is not "valid":

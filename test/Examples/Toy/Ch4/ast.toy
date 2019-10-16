@@ -1,4 +1,4 @@
-# RUN: toyc-ch4 %s -emit=ast 2>&1 | FileCheck %s
+# RUN: toyc-ch3 %s -emit=ast 2>&1 | FileCheck %s
 
 
 # User defined generic function that operates solely on 
