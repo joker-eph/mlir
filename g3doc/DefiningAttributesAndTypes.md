@@ -11,7 +11,10 @@ structure of the IR, operations, etc.
 ## Types
 
 Types in MLIR (like attributes, locations, and many other things) are
-value-typed. This means that instances of `Type` should be passed around
+value-typed. This means that instances of `T
+
+
+ype` should be passed around
 by-value, as opposed to by-pointer or by-reference. The `Type` class in itself
 acts as a wrapper around an internal storage object that is uniqued within an
 instance of an `MLIRContext`.
